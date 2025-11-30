@@ -12,11 +12,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import {
-  Drawer,
-  DrawerContent,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
+import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import {
   Popover,
   PopoverContent,
@@ -25,7 +21,7 @@ import {
 import { Currencies, type Currency } from "@/lib/currencies";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import SkeletonWrapper from "./SkeletonWrapper";
-import type { UserSettings } from "@/lib/generated/prisma";
+import type { UserSettings } from "@prisma/client";
 import { UpdateUserCurrency } from "@/app/wizard/_actions/userSettings";
 import { toast } from "sonner";
 
@@ -126,11 +122,7 @@ export function CurrencyComboBox() {
             className="w-[150px] justify-start"
             disabled={mutation.isPending}
           >
-            {selectedOption ? (
-              <>{selectedOption.label}</>
-            ) : (
-              <>+ Set status</>
-            )}
+            {selectedOption ? <>{selectedOption.label}</> : <>+ Set status</>}
           </Button>
         </DrawerTrigger>
         <DrawerContent>

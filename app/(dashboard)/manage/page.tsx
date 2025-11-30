@@ -17,7 +17,7 @@ import { PlusSquare, TrashIcon, TrendingDown, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
-import { Category } from "@/lib/generated/prisma";
+import { Category } from "@prisma/client";
 import DeleteCategoryDialog from "../_components/DeleteCategoryDialog";
 
 function page() {

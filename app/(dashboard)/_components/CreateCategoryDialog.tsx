@@ -29,7 +29,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { CircleOff, Loader2, PlusSquare } from "lucide-react";
 import React, { ReactNode, useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
-import CategoryPicker from "./CategoryPicker";
 import { Input } from "@/components/ui/input";
 import { Popover } from "@/components/ui/popover";
 import { PopoverContent, PopoverTrigger } from "@radix-ui/react-popover";
@@ -37,7 +36,7 @@ import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CreateCategory } from "../_actions/categories";
-import { Category } from "@/lib/generated/prisma";
+import { Category } from "@prisma/client";
 import { toast } from "sonner";
 
 interface Props {
