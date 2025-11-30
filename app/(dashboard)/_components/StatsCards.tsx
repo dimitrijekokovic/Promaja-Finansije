@@ -2,7 +2,7 @@
 
 import { GetBalanceStatsResponseType } from "@/app/api/stats/balance/route";
 import { DateToUTCDate, GetFormatterForCurrency } from "@/lib/helpers";
-import { UserSettings } from "@/lib/generated/prisma";
+import type { UserSettings } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import React, { ReactNode, useCallback, useMemo } from "react";
 import SkeletonWrapper from "@/components/SkeletonWrapper";

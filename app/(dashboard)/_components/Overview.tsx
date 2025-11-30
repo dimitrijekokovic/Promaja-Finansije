@@ -1,6 +1,6 @@
 "use client";
 
-import type { UserSettings } from "@/lib/generated/prisma";
+import type { UserSettings } from "@prisma/client";
 import { differenceInDays, startOfMonth } from "date-fns";
 import { useState } from "react";
 import { DateRangePicker } from "@/components/ui/date-range-picker";

@@ -2,7 +2,7 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { UserSettings } from "@/lib/generated/prisma";
+import type { UserSettings } from "@prisma/client";
 import { GetFormatterForCurrency } from "@/lib/helpers";
 import { Period, Timeframe } from "@/lib/types";
 import React, { useCallback, useMemo, useState } from "react";
