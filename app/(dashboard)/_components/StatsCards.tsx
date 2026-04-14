@@ -2,7 +2,7 @@
 
 import { GetBalanceStatsResponseType } from "@/app/api/stats/balance/route";
 import { DateToUTCDate, GetFormatterForCurrency } from "@/lib/helpers";
-import type { UserSettings } from "@prisma/client";
+import type { ClientUserSettings } from "@/lib/types";
 import { useQuery } from "@tanstack/react-query";
 import React, { ReactNode, useCallback, useMemo } from "react";
 import SkeletonWrapper from "@/components/SkeletonWrapper";
@@ -13,7 +13,7 @@ import { Card } from "@/components/ui/card";
 interface Props {
   from: Date;
   to: Date;
-  userSettings: UserSettings;
+  userSettings: ClientUserSettings;
 }
 
 function StatsCards({ from, to, userSettings }: Props) {
@@ -21,7 +21,7 @@ function StatsCards({ from, to, userSettings }: Props) {
     queryKey: ["overview", "stats", from, to],
     queryFn: () =>
       fetch(
-        `/api/stats/balance?from=${DateToUTCDate(from)}&to=${DateToUTCDate(to)}`
+        `/api/stats/balance?from=${DateToUTCDate(from)}&to=${DateToUTCDate(to)}`,
       ).then((res) => res.json()),
   });
 
@@ -31,7 +31,7 @@ function StatsCards({ from, to, userSettings }: Props) {
 
   const income = statsQuery.data?.prihod || 0;
   const expense = statsQuery.data?.rashod || 0;
-  const balance = income - expense;
+  const balance = statsQuery.data?.stanje || 0;
 
   return (
     <div className="relative flex w-full flex-wrap gap-2 md:flex-nowrap">
@@ -87,7 +87,7 @@ function StatCard({
     (value: number) => {
       return formatter.format(value);
     },
-    [formatter]
+    [formatter],
   );
 
   return (

@@ -24,9 +24,8 @@ export async function GET(request: Request) {
   const stats = await getBalanceStats(
     user.id,
     queryParams.data.from,
-    queryParams.data.to
+    queryParams.data.to,
   );
-
   return Response.json(stats);
 }
 
@@ -49,8 +48,25 @@ async function getBalanceStats(userId: string, from: Date, to: Date) {
     },
   });
 
+  const userSettings = await prisma.userSettings.findUnique({
+    where: {
+      userId,
+    },
+  });
+
+  const rashod = Number(
+    totals.find((t) => t.type === "rashod")?._sum.amount || 0,
+  );
+
+  const prihod = Number(
+    totals.find((t) => t.type === "prihod")?._sum.amount || 0,
+  );
+
+  const stanje = Number(userSettings?.currentBalance || 0);
+
   return {
-    rashod: totals.find((t) => t.type === "rashod")?._sum.amount || 0,
-    prihod: totals.find((t) => t.type === "prihod")?._sum.amount || 0,
+    rashod,
+    prihod,
+    stanje,
   };
 }

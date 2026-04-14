@@ -91,7 +91,7 @@ function CreateCategoryDialog({ type, successCallback, trigger }: Props) {
       });
       mutate(values);
     },
-    [mutate]
+    [mutate],
   );
 
   return (
@@ -117,7 +117,7 @@ function CreateCategoryDialog({ type, successCallback, trigger }: Props) {
             <span
               className={cn(
                 "m-1",
-                type === "prihod" ? "text-emerald-500" : "text-red-500"
+                type === "prihod" ? "text-emerald-500" : "text-red-500",
               )}
             >
               {type}
@@ -137,7 +137,11 @@ function CreateCategoryDialog({ type, successCallback, trigger }: Props) {
                 <FormItem>
                   <FormLabel>Ime</FormLabel>
                   <FormControl>
-                    <Input placeholder="Kategorija..." {...field} />
+                    <Input
+                      placeholder="Kategorija..."
+                      {...field}
+                      value={field.value ?? ""}
+                    />
                   </FormControl>
                   <FormDescription>
                     Ovako ce ti Kategorija izgledati u aplikaciji

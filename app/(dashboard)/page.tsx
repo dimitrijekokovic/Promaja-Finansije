@@ -13,11 +13,19 @@ async function page() {
     redirect("/sign-in");
   }
 
-  const userSettings = await prisma.userSettings.findUnique({
+  const userSettingsRaw = await prisma.userSettings.findUnique({
     where: {
       userId: user.id,
     },
   });
+
+  const userSettings = userSettingsRaw
+    ? {
+        userId: userSettingsRaw.userId,
+        currency: userSettingsRaw.currency,
+        currentBalance: Number(userSettingsRaw.currentBalance),
+      }
+    : null;
 
   if (!userSettings) {
     redirect("/wizard");

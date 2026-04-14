@@ -1,15 +1,19 @@
 "use client";
 
-import type { UserSettings } from "@prisma/client";
-import { differenceInDays, startOfMonth } from "date-fns";
+import { startOfMonth } from "date-fns";
 import { useState } from "react";
 import { DateRangePicker } from "@/components/ui/date-range-picker";
-import { MAX_DATE_RANGE_DAYS } from "@/lib/constants";
-import { toast } from "sonner";
 import StatsCards from "./StatsCards";
+
 import CategoriesStats from "./CategoriesStats";
 
-function Overview({ userSettings }: { userSettings: UserSettings }) {
+type ClientUserSettings = {
+  userId: string;
+  currency: string;
+  currentBalance: number;
+};
+
+function Overview({ userSettings }: { userSettings: ClientUserSettings }) {
   const [dateRange, setDateRange] = useState<{ from: Date; to: Date }>({
     from: startOfMonth(new Date()),
     to: new Date(),
@@ -28,18 +32,13 @@ function Overview({ userSettings }: { userSettings: UserSettings }) {
               const { from, to } = values.range;
 
               if (!from || !to) return;
-              if (differenceInDays(to, from) > MAX_DATE_RANGE_DAYS) {
-                toast.error(
-                  `Preveliki razmak izmedju dana, maksmilani razmak je ${MAX_DATE_RANGE_DAYS} dana`
-                );
-                return;
-              }
 
               setDateRange({ from, to });
             }}
           />
         </div>
       </div>
+
       <div className="container flex w-full flex-col gap-2">
         <StatsCards
           userSettings={userSettings}

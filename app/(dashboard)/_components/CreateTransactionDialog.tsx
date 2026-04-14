@@ -76,7 +76,7 @@ export default function CreateTransactionDialog({ trigger, type }: Props) {
     (value: string) => {
       form.setValue("category", value);
     },
-    [form]
+    [form],
   );
 
   const { mutate, isPending } = useMutation({
@@ -112,7 +112,7 @@ export default function CreateTransactionDialog({ trigger, type }: Props) {
         date: DateToUTCDate(values.date),
       });
     },
-    [mutate]
+    [mutate],
   );
 
   // zajednički sadržaj forme (isti i za Dialog i za Drawer)
@@ -174,7 +174,7 @@ export default function CreateTransactionDialog({ trigger, type }: Props) {
                         variant={"outline"}
                         className={cn(
                           "w-[200px] pl-3 text-left font-normal",
-                          !field.value && "text-muted-foreground"
+                          !field.value && "text-muted-foreground",
                         )}
                       >
                         {field.value ? (
@@ -210,7 +210,7 @@ export default function CreateTransactionDialog({ trigger, type }: Props) {
   );
 
   const footerButtons = (
-    <>
+    <div className="flex gap-2">
       <Button
         type="button"
         variant={"secondary"}
@@ -221,11 +221,16 @@ export default function CreateTransactionDialog({ trigger, type }: Props) {
       >
         Otkazi
       </Button>
-      <Button onClick={form.handleSubmit(onSubmit)} disabled={isPending}>
+
+      <Button
+        type="button"
+        onClick={form.handleSubmit(onSubmit)}
+        disabled={isPending}
+      >
         {!isPending && "Napravi"}
         {isPending && <Loader2 className="animate-spin" />}
       </Button>
-    </>
+    </div>
   );
 
   // DESKTOP: Dialog
@@ -240,7 +245,7 @@ export default function CreateTransactionDialog({ trigger, type }: Props) {
               <span
                 className={cn(
                   "m-1",
-                  type === "prihod" ? "text-emerald-500" : "text-red-500"
+                  type === "prihod" ? "text-emerald-500" : "text-red-500",
                 )}
               >
                 {type}
@@ -270,7 +275,7 @@ export default function CreateTransactionDialog({ trigger, type }: Props) {
             <span
               className={cn(
                 "m-1",
-                type === "prihod" ? "text-emerald-500" : "text-red-500"
+                type === "prihod" ? "text-emerald-500" : "text-red-500",
               )}
             >
               {type}

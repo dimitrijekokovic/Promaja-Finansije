@@ -2,7 +2,6 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import type { UserSettings } from "@prisma/client";
 import { GetFormatterForCurrency } from "@/lib/helpers";
 import { Period, Timeframe } from "@/lib/types";
 import React, { useCallback, useMemo, useState } from "react";
@@ -21,7 +20,13 @@ import SkeletonWrapper from "@/components/SkeletonWrapper";
 import { cn } from "@/lib/utils";
 import CountUp from "react-countup";
 
-function History({ userSettings }: { userSettings: UserSettings }) {
+type ClientUserSettings = {
+  userId: string;
+  currency: string;
+  currentBalance: number;
+};
+
+function History({ userSettings }: { userSettings: ClientUserSettings }) {
   const [timeframe, setTimeframe] = useState<Timeframe>("month");
   const [period, setPeriod] = useState<Period>({
     month: new Date().getMonth(),
@@ -36,7 +41,7 @@ function History({ userSettings }: { userSettings: UserSettings }) {
     queryKey: ["overview", "history", timeframe, period],
     queryFn: () =>
       fetch(
-        `/api/history-data?timeframe=${timeframe}&year=${period.year}&month=${period.month}`
+        `/api/history-data?timeframe=${timeframe}&year=${period.year}&month=${period.month}`,
       ).then((res) => res.json()),
   });
 
@@ -61,19 +66,20 @@ function History({ userSettings }: { userSettings: UserSettings }) {
                 variant={"outline"}
                 className="flex items-center gap-2 text-sm"
               >
-                <div className="h-4 w-4 rounded-full bg-emerald-500"></div>
+                <div className="h-4 w-4 rounded-full bg-emerald-500" />
                 Prihod
               </Badge>
               <Badge
                 variant={"outline"}
                 className="flex items-center gap-2 text-sm"
               >
-                <div className="h-4 w-4 rounded-full bg-red-500"></div>
+                <div className="h-4 w-4 rounded-full bg-red-500" />
                 Rashod
               </Badge>
             </div>
           </CardTitle>
         </CardHeader>
+
         <CardContent>
           <SkeletonWrapper isLoading={historyDataQuery.isFetching}>
             {dataAvailable && (
@@ -110,6 +116,7 @@ function History({ userSettings }: { userSettings: UserSettings }) {
                       />
                     </linearGradient>
                   </defs>
+
                   <CartesianGrid
                     strokeDasharray="5 5"
                     strokeOpacity={"0.2"}
@@ -160,6 +167,7 @@ function History({ userSettings }: { userSettings: UserSettings }) {
                     radius={4}
                     className="cursor-pointer"
                   />
+
                   <Tooltip
                     cursor={{ opacity: 0.1 }}
                     content={(props) => (
@@ -239,7 +247,7 @@ function TooltipRow({
     (value: number) => {
       return formatter.format(value);
     },
-    [formatter]
+    [formatter],
   );
 
   return (

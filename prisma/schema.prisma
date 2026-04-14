@@ -16,8 +16,9 @@ datasource db {
 
 
 model UserSettings {
-  userId String @id
-  currency String
+  userId         String  @unique
+  currency       String
+  currentBalance Decimal @default(0)
 }
 
 model Category {

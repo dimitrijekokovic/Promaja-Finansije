@@ -21,19 +21,22 @@ import {
 import { Currencies, type Currency } from "@/lib/currencies";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import SkeletonWrapper from "./SkeletonWrapper";
-import type { UserSettings } from "@prisma/client";
 import { UpdateUserCurrency } from "@/app/wizard/_actions/userSettings";
 import { toast } from "sonner";
+
+type ClientUserSettings = {
+  currency: string;
+};
 
 export function CurrencyComboBox() {
   const [open, setOpen] = React.useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const [selectedOption, setSelectedOption] = React.useState<Currency | null>(
-    null
+    null,
   );
 
   // --- FETCH USER SETTINGS ---
-  const userSettings = useQuery<UserSettings>({
+  const userSettings = useQuery<ClientUserSettings>({
     queryKey: ["userSettings"],
     queryFn: () => fetch("/api/user-settings").then((res) => res.json()),
   });
@@ -42,7 +45,7 @@ export function CurrencyComboBox() {
     if (!userSettings.data) return;
 
     const userCurrency = Currencies.find(
-      (currency) => currency.value === userSettings.data.currency
+      (currency) => currency.value === userSettings.data.currency,
     );
 
     if (userCurrency) setSelectedOption(userCurrency);
@@ -51,7 +54,7 @@ export function CurrencyComboBox() {
   // --- MUTATION ZA UPDATE VALUTE ---
   const mutation = useMutation({
     mutationFn: UpdateUserCurrency,
-    onSuccess: (data: UserSettings) => {
+    onSuccess: (data: ClientUserSettings) => {
       toast.success("Valuta uspešno ažurirana!", {
         id: "update-currency",
       });
@@ -81,7 +84,7 @@ export function CurrencyComboBox() {
 
       mutation.mutate(currency.value);
     },
-    [mutation]
+    [mutation],
   );
 
   if (isDesktop) {

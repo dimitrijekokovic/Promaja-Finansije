@@ -5,14 +5,14 @@ import SkeletonWrapper from "@/components/SkeletonWrapper";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import type { UserSettings } from "@prisma/client";
+import type { ClientUserSettings } from "@/lib/types";
 import { DateToUTCDate, GetFormatterForCurrency } from "@/lib/helpers";
 import { TransactionType } from "@/lib/types";
 import { useQuery } from "@tanstack/react-query";
 import React, { useMemo } from "react";
 
 interface Props {
-  userSettings: UserSettings;
+  userSettings: ClientUserSettings;
   from: Date;
   to: Date;
 }
@@ -23,8 +23,8 @@ function CategoriesStats({ userSettings, from, to }: Props) {
     queryFn: () =>
       fetch(
         `/api/stats/categories?from=${DateToUTCDate(from)}&to=${DateToUTCDate(
-          to
-        )}`
+          to,
+        )}`,
       ).then((res) => res.json()),
   });
 
@@ -66,7 +66,7 @@ function CategoriesCard({
   const filteredData = data.filter((el) => el.type === type);
   const total = filteredData.reduce(
     (acc, el) => acc + (el._sum?.amount || 0),
-    0
+    0,
   );
 
   return (

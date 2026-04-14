@@ -98,5 +98,16 @@ export async function CreateTransaction(form: CreateTransactionSchemaType) {
         },
       },
     }),
+
+    prisma.userSettings.update({
+      where: {
+        userId: user.id,
+      },
+      data: {
+        currentBalance: {
+          increment: type === "prihod" ? amount : -amount,
+        },
+      },
+    }),
   ]);
 }
