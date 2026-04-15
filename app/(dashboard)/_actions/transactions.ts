@@ -21,8 +21,9 @@ export async function CreateTransaction(form: CreateTransactionSchemaType) {
 
   const { amount, category, date, description, type } = parsedBody.data;
 
-  const normalizedDate = date;
-
+  const normalizedDate = new Date(
+    Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), 12, 0, 0, 0),
+  );
   const categoryRow = await prisma.category.findFirst({
     where: {
       userId: user.id,

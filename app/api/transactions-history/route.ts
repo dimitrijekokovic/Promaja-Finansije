@@ -28,7 +28,7 @@ export async function GET(request: Request) {
   const transactions = await getTransactionsHistory(
     user.id,
     queryParams.data.from,
-    queryParams.data.to
+    queryParams.data.to,
   );
 
   return Response.json(transactions);
@@ -37,6 +37,18 @@ export async function GET(request: Request) {
 export type GetTransactionHistoryResponseType = Awaited<
   ReturnType<typeof getTransactionsHistory>
 >;
+
+function startOfDay(date: Date) {
+  const d = new Date(date);
+  d.setHours(0, 0, 0, 0);
+  return d;
+}
+
+function endOfDay(date: Date) {
+  const d = new Date(date);
+  d.setHours(23, 59, 59, 999);
+  return d;
+}
 
 async function getTransactionsHistory(userId: string, from: Date, to: Date) {
   const userSettings = await prisma.userSettings.findUnique({
@@ -55,8 +67,8 @@ async function getTransactionsHistory(userId: string, from: Date, to: Date) {
     where: {
       userId,
       date: {
-        gte: from,
-        lte: to,
+        gte: startOfDay(from),
+        lte: endOfDay(to),
       },
     },
     orderBy: {

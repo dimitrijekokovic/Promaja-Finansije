@@ -74,5 +74,19 @@ export async function DeleteTransaction(id: string) {
         }),
       },
     }),
+
+    prisma.userSettings.update({
+      where: {
+        userId: user.id,
+      },
+      data: {
+        currentBalance: {
+          increment:
+            transaction.type === "prihod"
+              ? -transaction.amount
+              : transaction.amount,
+        },
+      },
+    }),
   ]);
 }
